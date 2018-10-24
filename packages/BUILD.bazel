@@ -494,6 +494,19 @@ latex_package(
 )
 
 latex_package(
+    name = "xfrac",
+    srcs = [
+      ":expl3",
+      ":amstext",
+      ":graphicx",
+      ":l3keys2e",
+      ":xparse",
+      "@texlive_texmf__texmf-dist__tex__latex__l3packages__xtemplate",
+      "@texlive_texmf__texmf-dist__tex__latex__l3packages__xfrac"
+    ],
+)
+
+latex_package(
     name = "xifthen",
     srcs = [
         ":calc",
