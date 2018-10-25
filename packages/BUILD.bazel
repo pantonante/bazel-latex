@@ -3,6 +3,16 @@ load(":packages.bzl", "latex_package")
 # Externally usable library targets.
 
 latex_package(
+    name = "algorithm2e",
+    srcs = [
+      ":tools",
+      "@texlive_texmf__texmf-dist__tex__latex__relsize",
+      "@texlive_texmf__texmf-dist__tex__latex__ifoddpage",
+      "@texlive_texmf__texmf-dist__tex__latex__algorithm2e",
+    ],
+)
+
+latex_package(
     name = "adjustbox",
     srcs = [
         ":collectbox",
