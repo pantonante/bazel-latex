@@ -27,7 +27,7 @@ for external in sorted(os.listdir("external")):
 
 (
     kpsewhich_file,
-    pdftex_file,
+    luatex_file,
     latexrun_file,
     job_name,
     main_file,
@@ -35,21 +35,29 @@ for external in sorted(os.listdir("external")):
 ) = sys.argv[1:]
 
 env = dict(os.environ)
+env["OPENTYPEFONTS"] = ":".join(texinputs)
 env["PATH"] = "%s:%s" % (os.path.abspath("bin"), env["PATH"])
 env["SOURCE_DATE_EPOCH"] = "0"
 env["TEXINPUTS"] = ":".join(texinputs)
 env["TEXMF"] = os.path.abspath("texmf/texmf-dist")
 env["TEXMFCNF"] = os.path.abspath("texmf/texmf-dist/web2c")
 env["TEXMFROOT"] = os.path.abspath("texmf")
+env["TTFONTS"] = ":".join(texinputs)
 
 os.mkdir("bin")
 os.link(kpsewhich_file, "bin/kpsewhich")
-os.link(pdftex_file, "bin/pdflatex")
-os.link(pdftex_file, "bin/pdftex")
+os.link(luatex_file, "bin/lualatex")
+os.link(luatex_file, "bin/luatex")
 os.link("texmf/texmf-dist/scripts/texlive/fmtutil.pl", "bin/mktexfmt")
 
 return_code = subprocess.call(
-    args=[latexrun_file, "--latex-args=-jobname=" + job_name, "-Wall", main_file],
+    args=[
+        latexrun_file,
+        "--latex-args=-jobname=" + job_name,
+        "--latex-cmd=lualatex",
+        "-Wall",
+        main_file,
+    ],
     env=env,
 )
 if return_code != 0:
